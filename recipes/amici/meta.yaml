@@ -1,0 +1,59 @@
+{% set name = "amici" %}
+{% set version = "0.11.6" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: edeba0ffc1893618c4cae01fd4b7548e0e85989efff86753dda1e8c33fb7d37b
+
+build:
+  number: 0
+  # If the installation is complex, or different between Unix and Windows, use separate bld.bat and build.sh files instead of this key.
+  # By default, the package will be built for the Python versions supported by conda-forge and for all major OSs.
+  # Add the line "skip: True  # [py<35]" (for example) to limit to Python 3.5 and newer, or "skip: True  # [not win]" to limit to Windows.
+  script: "{{ PYTHON }} -m pip install . -vv"
+  skip: true  # [py<37]
+
+requirements:
+  build:
+  host:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - numpy
+    - pip
+    - python>=3.7
+    - swig>=4
+  run:
+    - python
+
+test:
+  # Some packages might need a `test/commands` key to check CLI.
+  # List all the packages/modules that `run_test.py` imports.
+  imports:
+    - amici
+    - amici.amici
+
+about:
+  home: https://github.com/amici-dev/amici
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file: LICENSE.txt
+  summary: 'Advanced Multilanguage Interface to CVODES and IDAS'
+
+  # The remaining entries in this section are optional, but recommended.
+  description: |
+    AMICI provides a multi-language (Python, C++, Matlab) interface for the
+    SUNDIALS solvers CVODES (for ordinary differential equations) and IDAS
+    (for algebraic differential equations). AMICI allows the user to read
+    differential equation models specified as SBML or PySB and automatically
+    compiles such models into .mex simulation files (Matlab), C++ executables
+    or Python modules.
+  doc_url: https://amici.readthedocs.io/en/latest/
+  dev_url: https://github.com/amici-dev/amici
+
+extra:
+  recipe-maintainers:
+    - dweindl
