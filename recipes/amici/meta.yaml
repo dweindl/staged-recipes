@@ -66,13 +66,11 @@ test:
     - toposort
     - wurlitzer
     - pandas
-  # Some packages might need a `test/commands` key to check CLI.
-  # List all the packages/modules that `run_test.py` imports.
   imports:
     - amici
     - amici.amici
   commands:
-    - {{ PYTHON }} -m amici
+    - python -m amici
 
 about:
   home: https://github.com/amici-dev/amici
