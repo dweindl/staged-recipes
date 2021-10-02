@@ -13,32 +13,72 @@ build:
   number: 0
   script: "{{ PYTHON }} -m pip install . -vv"
   skip: true  # [win or py<37]
+  script_env:
+    - BLAS_LIBS="-lopenblas"
+
 
 requirements:
   build:
-  host:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - openblas-devel
-    - numpy
+    - numpy>=1.19.3
     - pip
     - python>=3.7
     - swig>=4
+    - _openmp_mutex
+    - libstdcxx-ng
+    - libgcc-ng
+    - pandas
+    - sympy
+    - openblas-devel
+    - openblas
+  host:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - numpy>=1.19.3
+    - pip
+    - python>=3.7
+    - swig>=4
+    - _openmp_mutex
+    - libstdcxx-ng
+    - libgcc-ng
+    - pandas
+    - sympy
+    - openblas-devel
+    - openblas
   run:
-    - python
-
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - numpy>=1.19.3
+    - pip
+    - python>=3.7
+    - swig>=4
+    - _openmp_mutex
+    - libstdcxx-ng
+    - libgcc-ng
+    - pandas
+    - sympy
+    - openblas-devel
+    - openblas
 test:
+  requires:
+    - python-libsbml
+    - toposort
+    - wurlitzer
+    - pandas
   # Some packages might need a `test/commands` key to check CLI.
   # List all the packages/modules that `run_test.py` imports.
   imports:
     - amici
     - amici.amici
+  commands:
+    - {{ PYTHON }} -m amici
 
 about:
   home: https://github.com/amici-dev/amici
   license: BSD-3-Clause
   license_family: BSD
-  license_file: LICENSE.txt
+  #license_file: LICENSE.txt
   summary: 'Advanced Multilanguage Interface to CVODES and IDAS'
 
   # The remaining entries in this section are optional, but recommended.
